@@ -30,8 +30,11 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
-
-
+% Compute hypothesis values for m samples and all k classifiers.
+temp = sigmoid(X * all_theta');
+% p is a column-vector of size m containing indices of 
+% class with maximum hypothesis value.
+[M, p] = max(temp, [], 2);
 
 
 
