@@ -36,12 +36,22 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+% Hypothesis function.
+h = sigmoid(X * theta);
+temp = y' * log(h) + (1 - y)' * log(1 - h);
+J = -temp / m;
 
+% Compute the regularization part.
+regular = theta(2:end);
+regular = regular .^ 2;
+J = J + (lambda * sum(regular)) / (2 * m);
 
-
-
-
-
+% Regularized gradients.
+temp = X' * (sigmoid(X * theta) - y);
+grad = temp / m;
+regular = theta;
+regular(1) = 0;
+grad = grad + (lambda * regular) / m;
 
 
 
