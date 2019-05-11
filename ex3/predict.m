@@ -21,8 +21,18 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+% Add a column of 1s to X.
+X = [ones(m,1) X];
 
-
+for i = 1:m
+    % Compute hidden layer.
+    temp = sigmoid(Theta1 * X(i, :)');
+    % Add 1 to the hidden layer
+    hidden = [1; temp];
+    output = sigmoid(Theta2 * hidden);
+    [max_val, max_idx] = max(output, [], 1);
+    p(i) = max_idx;
+end
 
 
 
