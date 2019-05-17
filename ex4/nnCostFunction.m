@@ -62,7 +62,23 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Add column of 1's to X.
+X = [ones(m, 1) X];
 
+% Cost function without regularization.
+for i = 1:m
+    z_2 = Theta1 * X(i, :)';
+    a_2 = sigmoid(z_2);
+    a_2 = [1; a_2];
+    z_3 = Theta2 * a_2;
+    hypo = sigmoid(z_3);
+    
+    % Convert example label to a binary vector.
+    label = zeros(num_labels, 1);
+    label(y(i)) = 1;
+    temp = label' * log(hypo) + (1 - label') * log(1 - hypo);
+    J = J - temp / m;
+end
 
 
 
