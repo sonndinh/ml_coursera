@@ -80,7 +80,16 @@ for i = 1:m
     J = J - temp / m;
 end
 
+% Compute regularization part.
+total = 0;
+temp_theta1 = Theta1(1:end, 2:end);
+temp_theta1 = temp_theta1 .^ 2;
+total = total + sum(sum(temp_theta1, 1));
 
+temp_theta2 = Theta2(1:end, 2:end);
+temp_theta2 = temp_theta2 .^ 2;
+total = total + sum(sum(temp_theta2, 1));
+J = J + (lambda * total) / (2 * m);
 
 
 
