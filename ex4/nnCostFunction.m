@@ -80,7 +80,7 @@ for i = 1:m
     J = J - temp / m;
 end
 
-% Compute regularization part.
+% Compute regularization part for cost function.
 total = 0;
 temp_theta1 = Theta1(1:end, 2:end);
 temp_theta1 = temp_theta1 .^ 2;
@@ -124,7 +124,13 @@ end
 Theta1_grad = Delta_1 ./ m;
 Theta2_grad = Delta_2 ./ m;
 
-
+% Add regularization part for gradients.
+Regular1 = Theta1(:, 2:end);
+Regular1 = [zeros(size(Theta1, 1), 1) Regular1];
+Theta1_grad = Theta1_grad + Regular1 * (lambda / m);
+Regular2 = Theta2(:, 2:end);
+Regular2 = [zeros(size(Theta2, 1), 1) Regular2];
+Theta2_grad = Theta2_grad + Regular2 * (lambda / m);
 
 
 
