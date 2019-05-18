@@ -91,9 +91,38 @@ temp_theta2 = temp_theta2 .^ 2;
 total = total + sum(sum(temp_theta2, 1));
 J = J + (lambda * total) / (2 * m);
 
+% Implement backpropagation.
+Delta_2 = zeros(size(Theta2));
+Delta_1 = zeros(size(Theta1));
+for i = 1:m
+    z_2 = Theta1 * X(i, :)';
+    a_2 = sigmoid(z_2);
+    a_2 = [1; a_2];
+    z_3 = Theta2 * a_2;
+    a_3 = sigmoid(z_3);
+    
+    % Errors for output layer.
+    label = zeros(num_labels, 1);
+    label(y(i)) = 1;
+    delta_3 = a_3 - label;
+    
+    % Errors for hidden layer.
+    z_2 = [1; z_2];
+    delta_2 = (Theta2' * delta_3) .* sigmoidGradient(z_2);
+    delta_2 = delta_2(2:end);
+    
+    % Compute the accumulated errors.
+    % Delta_2 is 10 x 26 matrix. a_2' contains activation for the bias
+    % unit. delta_3 does not contains error for the bias unit.
+    Delta_2 = Delta_2 + delta_3 * a_2';
+    a_1 = X(i, :)';
+    % Delta_1 is 25 x 401 matrix. a_1' contains activation for the bias
+    % unit. delta_2 does not contains error for the bias unit.
+    Delta_1 = Delta_1 + delta_2 * a_1';
+end
 
-
-
+Theta1_grad = Delta_1 ./ m;
+Theta2_grad = Delta_2 ./ m;
 
 
 
