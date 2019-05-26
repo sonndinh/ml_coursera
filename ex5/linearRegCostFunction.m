@@ -25,6 +25,18 @@ param(1) = 0;
 temp = sum(param .^ 2);
 J = total + temp * lambda / (2 * m);
 
+% Compute gradients.
+err = X * theta - y;
+for j = 1:size(theta)
+    grad(j) = err' * X(1:end, j);
+end
+reg = theta;
+reg(1) = 0;
+reg = reg * lambda;
+grad = (grad + reg) / m;
+
+
+
 
 % =========================================================================
 
