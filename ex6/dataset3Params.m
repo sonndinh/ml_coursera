@@ -23,7 +23,7 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 val = [0.01 0.03 0.1 0.3 1 3 10 30];
-error_rate = 1.0; % Maximum error rate is 1.0.
+error_rate = 1.0; % Initial minimum error rate is 1.0
 optimal_C = 0.01;
 optimal_sigma = 0.01;
 
@@ -32,6 +32,7 @@ for C_val = val
         model = svmTrain(X, y, C_val, @(x1, x2) gaussianKernel(x1, x2, sigma_val));
         predictions = svmPredict(model, Xval);
         curr_error = mean(double(predictions ~= yval));
+        
         if curr_error < error_rate
             error_rate = curr_error;
             optimal_C = C_val;
