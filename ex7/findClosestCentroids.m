@@ -20,9 +20,22 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
-
+m = size(X, 1);
+for i = 1 : m
+    min_dist = intmax('int64');
+    min_idx = 0;
+    for j = 1 : K
+        x_i = X(i, :)';
+        miu_j = centroids(j, :)';
+        dist = sum((x_i - miu_j) .^ 2);
+        if dist < min_dist
+            min_dist = dist;
+            min_idx = j;
+        end
+    end
+    
+    idx(i) = min_idx;
+end
 
 
 
