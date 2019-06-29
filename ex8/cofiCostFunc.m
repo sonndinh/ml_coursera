@@ -41,7 +41,21 @@ Theta_grad = zeros(size(Theta));
 %
 J = sum(sum(((X*Theta' - Y) .^ 2)  .* R)) / 2;
 
+% Compute gradients for movies.
+for i = 1 : num_movies
+    errors = Theta * X(i, :)' - Y(i, :)';
+    for k = 1 : num_features
+        X_grad(i, k) = sum(errors .* (Theta(:, k) .* R(i, :)'));
+    end
+end
 
+% Compute gradients for users.
+for j = 1 : num_users
+    errors = X * Theta(j, :)' - Y(:, j);
+    for k = 1 : num_features
+        Theta_grad(j, k) = sum(errors .* (X(:, k) .* R(:, j)));
+    end
+end
 
 % =============================================================
 
