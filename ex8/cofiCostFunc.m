@@ -40,6 +40,9 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 J = sum(sum(((X*Theta' - Y) .^ 2)  .* R)) / 2;
+reg = (sum(sum(X .^ 2)) + sum(sum(Theta .^ 2))) * (lambda / 2);
+J = J + reg;
+
 
 % Compute gradients for movies.
 for i = 1 : num_movies
@@ -47,6 +50,7 @@ for i = 1 : num_movies
     for k = 1 : num_features
         X_grad(i, k) = sum(errors .* (Theta(:, k) .* R(i, :)'));
     end
+    X_grad(i, :) = X_grad(i, :) + X(i, :) * lambda;
 end
 
 % Compute gradients for users.
@@ -55,6 +59,7 @@ for j = 1 : num_users
     for k = 1 : num_features
         Theta_grad(j, k) = sum(errors .* (X(:, k) .* R(:, j)));
     end
+    Theta_grad(j, :) = Theta_grad(j, :) + Theta(j, :) * lambda;
 end
 
 % =============================================================
